@@ -26,14 +26,14 @@ route.post("/sendemail", async (req, res) => {
     port: 587,
     secure: false,
     auth: {
-      user: "chedli.masmoudi01@gmail.com",
+      user: process.env.EMAIL_USER,
       name:"e-commerce",
-      pass: "ihxd zmvu gpct rkox",
+      pass: process.env.EMAIL_PASS,
     },
   });
 
   const configs = {
-    from: "e-commerce <chedli.masmoudi01@gmail.com>",
+    from: `e-commerce <${process.env.EMAIL_USER}>`,
     to: req.body.email,
     subject: req.body.subject,
     text: req.body.text,
