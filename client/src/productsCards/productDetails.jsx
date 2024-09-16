@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ProductDetails({ value }) {
   const [quantity, setQuantity] = useState(0);
@@ -11,7 +11,7 @@ export default function ProductDetails({ value }) {
         name: value.name,
         price: value.price,
         id:value.id,
-        image:value.imageUrl
+        image:value.imageUrl,
       })
       .then((res) => window.location.reload());
   };
@@ -31,7 +31,7 @@ export default function ProductDetails({ value }) {
         <div className="w-3/4 h-fit flex items-center justify-around">
           <label className="text-xl font-semibold ">Quantity:</label>
           <input
-            onChange={(event) => setQuantity(event.target.value)}
+            onChange={(event) => {setQuantity(event.target.value)}}
             className="w-10 h-10 border-black border-2 rounded-lg"
             type="text"
           />

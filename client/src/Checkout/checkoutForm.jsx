@@ -11,10 +11,15 @@ export default function CheckoutForm({ total }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     axios.post("http://localhost:3000/sendemail", {
-      content:"bhar lazrag",
+
+      name:name,
+      phone:phone,
+      adress:adress,
+      total:total,
+      date:new Date().toDateString(),
       email: email,
       subject: "verifying checkout",
-      text: `name : ${name}     phone: ${phone}     orderDate: ${new Date()}    total to pay : ${total} TND  `,
+      text:"Dear Client, This is an invoice of your pursaches on our site. Thank you for visiting us",
     }).then(res=>navigate("/home"));
     
   };

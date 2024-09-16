@@ -18,7 +18,7 @@ import sendEmailRouter from "../mailing/sendEmail.mjs"
 import generatePdfRouter from "./pdf/generate.mjs"
 import checkoutRouter from "./cart/checkout.mjs";
 import quantityRouter from "./cart/manageQuantity.mjs";
-
+import dotenv from "dotenv";
 
 
 const app = express();
@@ -58,8 +58,10 @@ app.use(sendEmailRouter)
 app.use(generatePdfRouter);
 app.use(checkoutRouter);
 app.use(quantityRouter);
+
 ////////////////////////
 const PORT = process.env.PORT || 3000;
+
 
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
