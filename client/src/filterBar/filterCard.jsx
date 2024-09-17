@@ -1,18 +1,11 @@
 import axios from "axios";
 import { useContext, useState } from "react";
 import { actualPagination } from "../home";
-import { useNavigate } from "react-router-dom";
 
-export default function FilterCard({ value }) {
-  const [maxRange, setMaxRange] = useState(5000);
-  const [minRange, setMinRange] = useState(5000);
-  const [category,setCategory]=useState("");
+export default function FilterCard({ value ,filter}) {
+
   const [searchValue,setSearchValue]=useState("")
   const store=useContext(actualPagination);
-  const handleFilter = (event) => {
-    axios.post("http://localhost:3000/setFilter",{category:category,minPrice:minRange,maxPrice:maxRange}).then(res=>window.location.reload())
-
-  };
   const handleSearch=(event)=>{
     axios.post("http://localhost:3000/search",{searchValue:searchValue}).then(res=>{window.location.reload();})
   }
@@ -36,7 +29,7 @@ export default function FilterCard({ value }) {
       </div>
 
       <select
-        onChange={(event) => setCategory(event.target.value)}
+        onChange={(event) => filter.setFCategory(event.target.value)}
         class="form-select"
         aria-label="Default select example"
       >
@@ -54,12 +47,12 @@ export default function FilterCard({ value }) {
           min="0"
           max="10000"
           id="customRange1"
-          defaultValue={minRange}
+          value={filter.fMinPrice}
           onChange={(event) => {
-            setMinRange(event.target.value);
+            filter.setFMinPrice(event.target.value);
           }}
         />
-        <span>{minRange} TND</span>
+        <span>{filter.fMinPrice} TND</span>
       </div>
       <div className="w-full flex flex-col items-center space-y-2">
         <label htmlFor="customRange2" class="form-label">
@@ -71,16 +64,15 @@ export default function FilterCard({ value }) {
           min="0"
           max="10000"
           id="customRange2"
-          defaultValue={maxRange}
+          value={filter.fMaxPrice}
           onChange={(event) => {
-            setMaxRange(event.target.value);
+            console.log("yes")
+            filter.setFMaxPrice(event.target.value);
           }}
         />
-        <span>{maxRange} TND</span>
+        <span>{filter.fMaxPrice} TND</span>
       </div>
-      <button  onClick={handleFilter} className="bg-yellow-500 text-4xl text-blue-950 font-bold p-2 rounded-lg">
-        Filter
-      </button>
+      
     </div>
   );
 }

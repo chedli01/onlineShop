@@ -1,9 +1,12 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { actualPagination, cartManagment } from "../home";
 
 export default function ProductDetails({ value }) {
   const [quantity, setQuantity] = useState(0);
   axios.defaults.withCredentials = true;
+  const store=useContext(actualPagination);
+  const states=useContext(cartManagment);
   const handleClick = (event) => {
     axios
       .post("http://localhost:3000/add-to-cart", {
@@ -13,7 +16,23 @@ export default function ProductDetails({ value }) {
         id:value.id,
         image:value.imageUrl,
       })
-      .then((res) => window.location.reload());
+      .then((res) => {
+        const result=states.cart.find((item)=>item.id==value.id)
+        if(result){
+          const updatedData=states.cart.map((item)=>{
+            if(item.id==value.id)
+              return {...item,quantity:parseInt(item.quantity)+parseInt(quantity)}
+            return item
+          });
+          states.setCart(updatedData);
+        }
+        else{states.setCart((prev)=>[...prev,{quantity: quantity,
+          name: value.name,
+          price: value.price,
+          id:value.id,
+          image:value.imageUrl,}])}
+        
+        });
   };
 
   return (

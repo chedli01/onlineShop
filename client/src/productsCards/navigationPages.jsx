@@ -2,20 +2,10 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { actualPagination } from "../home";
 
-export default function NavigationPages() {
+export default function NavigationPages({products}) {
   axios.defaults.withCredentials = true;
   const store = useContext(actualPagination);
-  const [products, setProducts] = useState([]);
-  const [isFiltred,setIsFiltred]=useState(false)
-
-  useEffect(()=>{
-    axios.get("http://localhost:3000/filter-status").then(res=>setIsFiltred(res.data.valid))
-  })
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/list-products")
-      .then((res) => setProducts(res.data));
-  }, []);
+ 
 
   return (
     <div className="w-full h-1/6  flex flex-col items-center justify-center space-y-4">
@@ -89,9 +79,7 @@ export default function NavigationPages() {
           </li>
         </ul>
       </nav>
-      {
-        isFiltred==true?<button className="w-1/4 text-xl font-bold text-blue-950 bg-yellow-500 rounded-lg" onClick={(event)=>{axios.get("http://localhost:3000/unfilter").then(res=>window.location.reload())}}>unfilter</button>:""
-      }
+     
       
     </div>
   );

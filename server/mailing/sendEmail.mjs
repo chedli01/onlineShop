@@ -5,6 +5,7 @@ import puppeteer from "puppeteer";
 import { Stream } from "stream";
 import fs from "fs";
 import handlebars from "handlebars";
+import Order from "../src/mongodb/orderSchema.mjs";
 
 const route = Router();
 dotenv.config();
@@ -60,13 +61,31 @@ route.post("/sendemail", async (req, res) => {
     subject: req.body.subject,
     text: req.body.text,
     attachments: {
-      filename: "document.pdf",
+      filename: "invoice.pdf",
       content: pdfStream,
       contentType: "application/pdf",
     },
   };
+  const orders=await Order.find();
+  const id=orders[orders.length-1].id+1;
+  const productIds = await req.session.cart.map((item) => {
+    return item.id;
+  });
+  const productQuantity = await req.session.cart.map((item) => {
+    return item.quantity;
+  });
+
+  
 
   const result = await transporter.sendMail(configs);
+  Order.create({
+    id: id,
+    productIds: productIds,
+    userEmail: req.session.email,
+    productQuantity: productQuantity,
+    orderDate: new Date(),
+    orderStatus: "pending",
+  });
   req.session.cart = [];
   res.sendStatus(200);
 });

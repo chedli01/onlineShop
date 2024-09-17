@@ -1,32 +1,28 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import CartItem from "./cartItem";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { actualPagination, cartManagment } from "../home";
 
 export default function CartElement({ cartStatus }) {
-  const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
-  const [cartState, setCartState] = useState("empty");
+  const states = useContext(cartManagment);
+
   const navigate = useNavigate();
   const handleCheckout = (event) => {
     navigate("/checkout");
   };
-  const handleClear=(event)=>{
-    axios.get("http://localhost:3000/clear-cart").then(res=>window.location.reload())
-  }
+  const handleClear = (event) => {
+    axios
+      .get("http://localhost:3000/clear-cart")
+      .then(async(res) =>{await states.setCart([]);window.location.reload()} );
+  };
   axios.defaults.withCredentials = true;
-  useEffect(() => {
-    axios.get("http://localhost:3000/cart").then((res) => {
-      if(res.data.length>0){setCartState("full")}
-      else {setCartState("empty")}
-      setProducts(res.data);
-    });
-  }, []);
+  
 
   useEffect(() => {
     setTotal(
-      products.reduce((acc, curr) => {
+      states.cart.reduce((acc, curr) => {
         return acc + curr.price * curr.quantity;
       }, 0)
     );
@@ -40,7 +36,7 @@ export default function CartElement({ cartStatus }) {
           : "hidden"
       }`}
     >
-      {products.map((item, index) => {
+      {states.cart.map((item, index) => {
         return <CartItem key={index} value={item} />;
       })}
       <div className="w-full h-1/6 flex flex-col justify-between items-center">
@@ -51,9 +47,10 @@ export default function CartElement({ cartStatus }) {
         >
           Proceed To Checkout
         </button>
-        <button 
+        <button
           onClick={handleClear}
-          className={`w-2/3 p-2 h-1/3 bg-blue-950 text-xl text-yellow-500 rounded-lg ${cartState=="empty"?"hidden":"flex justify-center items-center"}`}
+          className="w-2/3 p-2 h-1/3 bg-blue-950 text-xl text-yellow-500 rounded-lg"
+         
         >
           Clear Cart
         </button>
