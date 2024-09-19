@@ -41,7 +41,7 @@ export default function Header() {
 
   return (
     <div
-      className={`h-32 flex bg-yellow-300 ${
+      className={`h-32 flex bg-yellow-400   top-0 ${
         cartStatus == "down" ? "w-full" : "w-3/4"
       }`}
     >

@@ -66,7 +66,7 @@ export default function ProductDetails({ value }) {
   };
 
   return (
-    <div className={`w-full h-full  flex relative`}>
+    <div className={` ${store.detailed==false?"h-full w-full":"h-96 w-5/6 border-2 border-black rounded-xl mt-2"}   flex relative`}>
       <div
         className={`w-full h-full  absolute top-0 left-0 z-10 ${
           alertState == "none" ? "hidden" : "flex items-center justify-center"
@@ -76,7 +76,7 @@ export default function ProductDetails({ value }) {
       </div>
 
       <div
-        className={`w-1/3 h-full bg-cover bg-center border-r-2 border-r-black ${
+        className={`w-1/3 h-full ${store.detailed==true?"rounded-xl":""} bg-cover bg-center border-r-2 border-r-black ${
           alertState == "none" ? "opacity-100" : "opacity-10"
         }`}
         style={{ backgroundImage: `url(${value.imageUrl})` }}

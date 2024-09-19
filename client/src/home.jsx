@@ -29,29 +29,21 @@ export default function Home() {
   const [fMinPrice, setFMinPrice] = useState(5000);
   const [fMaxPrice, setFMaxPrice] = useState(5000);
   const [searchValue,setSearchValue]=useState("");
+  const [open,setOpen] = useState("closed");
+  const [scroll,setScroll]=useState(0);
+  const [detailed,setDetailed]=useState(false)
 
-  const [scrollPosition,setScrollPosition]=useState(0);
-
-
-  useEffect(()=>{
-
-    window.scrollTo(0,scrollPosition);
-
-  },[scrollPosition])
-
-  window.scrollTo(0,40)
 
   const stack = {
     setFMaxPrice,
     setFCategory,
     setFMinPrice,
     setSearchValue,
-    setScrollPosition,
     fCategory,
     fMaxPrice,
     fMinPrice,
     searchValue,
-    scrollPosition
+    
 
   };
 
@@ -78,8 +70,12 @@ export default function Home() {
     setExpanded,
     cart,
     setCart,
-    scrollPosition,
-    setScrollPosition
+    open,
+    setOpen,
+    scroll,setScroll,
+
+    detailed,setDetailed
+    
 
   };
   const states = { cart, setCart };
@@ -108,17 +104,21 @@ export default function Home() {
       <cartManagment.Provider value={states}>
         <div className="w-screnn overflow-x-hidden ">
           <Header />
-          <div className="w-screen h-full flex ">
-            <FilterCard value={filterBarStatus} filter={stack} />
+          <div className="w-screen h-full flex flex-1  ">
+          <FilterCard value={filterBarStatus} filter={stack}  />
+            
             <div
-              className={`h-full flex flex-col  relative  ${
+              className={`h-full flex flex-col   relative  ${
                 filterBarStatus == "hidden" ? "w-full" : "w-5/6"
               }`}
             >
-              <OrderBy setSortValue={setSortValue} />
+              <OrderBy setSortValue={setSortValue} open={open} setDetailed={setDetailed}  />
+              
 
-              <ProductsContainer  products={products} />
-              {filterBarStatus == "hidden" ? (
+              <ProductsContainer  products={products} >
+              
+                </ProductsContainer>
+              {/* {filterBarStatus == "hidden" ? (
                 <FontAwesomeIcon
                   onClick={handleShow}
                   className="fixed left-0 top-1/2 h-11 w-10"
@@ -130,7 +130,7 @@ export default function Home() {
                   className="fixed left-96 -translate-x-3 top-1/2 h-20 w-10"
                   icon={faArrowLeft}
                 />
-              )}
+              )} */}
               <NavigationPages products={products} />
             </div>
           </div>

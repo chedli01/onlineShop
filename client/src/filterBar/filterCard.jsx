@@ -16,7 +16,7 @@ export default function FilterCard({ value ,filter}) {
   // }
   return (
     <div
-      className={`w-1/5 h-screen bg-red-500  border-r-black border-r-2 ${
+      className={`w-1/5 h-fit space-y-12 ml-4 mt-40   border-black border-2 p-4 rounded-lg ${
         value == "hidden"
           ? "hidden"
           : "flex flex-col items-center justify-around"
