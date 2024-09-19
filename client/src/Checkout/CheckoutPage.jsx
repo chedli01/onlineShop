@@ -44,7 +44,7 @@ export default function CheckoutPage() {
         </h1>
       </div>
       <div className="w-1/2 h-screen  flex items-center justify-center">
-        <CheckoutForm total={total} />
+        <CheckoutForm total={total} products={products} />
       </div>
     </div>
   );

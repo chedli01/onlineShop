@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function CheckoutForm({ total }) {
+export default function CheckoutForm({ total,products }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -10,6 +10,11 @@ export default function CheckoutForm({ total }) {
   const navigate=useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
+    products.map((item)=>{
+      axios.post(`http://localhost:3000/minusStock/${item.id}`,{quantity:item.quantity});
+
+    })
+
     axios.post("http://localhost:3000/sendemail", {
 
       name:name,

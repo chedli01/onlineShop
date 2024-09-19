@@ -10,7 +10,7 @@ export default function ProductCard({ value }) {
   const navigate = useNavigate();
   return (
     <div
-      className={`h-full  border-2 rounded-lg flex flex-col items-center justify-between ${
+      className={`h-[650px]   mb-11 border-2 rounded-lg flex flex-col items-center justify-between ${
         value.id == store.expanded
           ? "w-5/6"
           : value.id != store.expanded && store.expanded != 0
@@ -26,7 +26,10 @@ export default function ProductCard({ value }) {
 <div className="w-full h-1/5 flex justify-center items-center">
       <button className="w-1/2 h-20 border-2 border-black text-2xl rounded-xl bg-blue-950 text-yellow-500"
         onClick={(event) => {
+          console.log(window.scrollY)
+          store.setScrollPosition(window.scrollY)
           if (open == "closed") {
+            
             setOpen("open");
             store.setExpanded(value.id);
           } else {

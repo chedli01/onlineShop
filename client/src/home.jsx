@@ -9,57 +9,83 @@ import NavigationPages from "./productsCards/navigationPages";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import OrderBy from "./filterBar/orderBy";
-export const actualPagination=createContext();
-export const cartManagment=createContext();
+export const actualPagination = createContext();
+export const cartManagment = createContext();
 export default function Home() {
   axios.defaults.withCredentials = true;
 
   const [name, setName] = useState("");
-  
-  const [max, setMax] = useState(3);
-  const [fproducts,setFProducts]=useState([])
-  const [isFiltered,setIsFiltered]=useState(false)
-  const [category,setCategory]=useState("")
-  const [expanded,setExpanded]=useState(0);
-  const [cart,setCart]=useState([]);
 
+  const [max, setMax] = useState(9);
+  const [fproducts, setFProducts] = useState([]);
 
-  const [sortValue, setSortValue] = useState(''); 
+  const [expanded, setExpanded] = useState(0);
+  const [cart, setCart] = useState([]);
+
+  const [sortValue, setSortValue] = useState("");
   const [products, setProducts] = useState([]);
 
-  const [fCategory,setFCategory]=useState("");
-  const [fMinPrice,setFMinPrice]=useState(5000);
-  const [fMaxPrice,setFMaxPrice]=useState(5000);
-  
-  const stack={setFMaxPrice,setFCategory,setFMinPrice,fCategory,fMaxPrice,fMinPrice}
+  const [fCategory, setFCategory] = useState("");
+  const [fMinPrice, setFMinPrice] = useState(5000);
+  const [fMaxPrice, setFMaxPrice] = useState(5000);
+  const [searchValue,setSearchValue]=useState("");
+
+  const [scrollPosition,setScrollPosition]=useState(0);
 
 
   useEffect(()=>{
 
-    axios.get(`http://localhost:3000/list-products?sort=${sortValue}&category=${fCategory}&minPrice=${fMinPrice}&maxPrice=${fMaxPrice}`).then(res=>setProducts(res.data));
-     
+    window.scrollTo(0,scrollPosition);
 
-  },[sortValue,fCategory,fMaxPrice,fMinPrice])
+  },[scrollPosition])
 
-  
-  
-  
-  
-  
-  
-  useEffect(()=>{
-    axios.get("http://localhost:3000/cart").then((res)=>{
+  window.scrollTo(0,40)
+
+  const stack = {
+    setFMaxPrice,
+    setFCategory,
+    setFMinPrice,
+    setSearchValue,
+    setScrollPosition,
+    fCategory,
+    fMaxPrice,
+    fMinPrice,
+    searchValue,
+    scrollPosition
+
+  };
+
+  useEffect(() => {
+    axios
+      .get(
+        `http://localhost:3000/list-products?sort=${sortValue}&category=${fCategory}&minPrice=${fMinPrice}&maxPrice=${fMaxPrice}&search=${searchValue}`
+      )
+      .then((res) => setProducts(res.data));
+  }, [sortValue, fCategory, fMaxPrice, fMinPrice,searchValue]);
+
+  useEffect(() => {
+    axios.get("http://localhost:3000/cart").then((res) => {
       setCart(res.data);
-    })
-     
-  },[])
+    });
+  }, []);
 
-  
-  const store={max,setMax,isFiltered,setIsFiltered,fproducts,setFProducts,category,setCategory,expanded,setExpanded,cart,setCart};
-  const states={cart,setCart}
+  const store = {
+    max,
+    setMax,
+    fproducts,
+    setFProducts,
+    expanded,
+    setExpanded,
+    cart,
+    setCart,
+    scrollPosition,
+    setScrollPosition
+
+  };
+  const states = { cart, setCart };
   const navigate = useNavigate();
   const [filterBarStatus, setFilterBarStatus] = useState("shown");
-  
+
   const handleShow = (event) => {
     setFilterBarStatus("shown");
   };
@@ -80,38 +106,36 @@ export default function Home() {
   return (
     <actualPagination.Provider value={store}>
       <cartManagment.Provider value={states}>
-    <div className="w-screnn h-screen ">
-      <Header />
-      <div className="w-screen h-5/6 flex ">
-        <FilterCard value={filterBarStatus} filter={stack} />
-        <div
-          className={`h-full flex flex-col  relative  ${
-            filterBarStatus == "hidden" ? "w-full" : "w-5/6"
-          }`}
-        >
+        <div className="w-screnn overflow-x-hidden ">
+          <Header />
+          <div className="w-screen h-full flex ">
+            <FilterCard value={filterBarStatus} filter={stack} />
+            <div
+              className={`h-full flex flex-col  relative  ${
+                filterBarStatus == "hidden" ? "w-full" : "w-5/6"
+              }`}
+            >
+              <OrderBy setSortValue={setSortValue} />
 
-          <OrderBy setSortValue={setSortValue} />
-          
-          
-          <ProductsContainer products={products}  />
-          {filterBarStatus == "hidden" ? (
-            <FontAwesomeIcon
-              onClick={handleShow}
-              className="fixed left-0 top-1/2 h-11 w-10"
-              icon={faArrowRight}
-            />
-          ) : (
-            <FontAwesomeIcon
-              onClick={handleHide}
-              className="fixed left-96 -translate-x-3 top-1/2 h-20 w-10"
-              icon={faArrowLeft}
-            />
-          )}
-          <NavigationPages products={products} />
+              <ProductsContainer  products={products} />
+              {filterBarStatus == "hidden" ? (
+                <FontAwesomeIcon
+                  onClick={handleShow}
+                  className="fixed left-0 top-1/2 h-11 w-10"
+                  icon={faArrowRight}
+                />
+              ) : (
+                <FontAwesomeIcon
+                  onClick={handleHide}
+                  className="fixed left-96 -translate-x-3 top-1/2 h-20 w-10"
+                  icon={faArrowLeft}
+                />
+              )}
+              <NavigationPages products={products} />
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    </cartManagment.Provider>
+      </cartManagment.Provider>
     </actualPagination.Provider>
   );
 }

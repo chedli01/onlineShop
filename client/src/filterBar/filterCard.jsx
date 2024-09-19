@@ -1,31 +1,35 @@
 import axios from "axios";
 import { useContext, useState } from "react";
 import { actualPagination } from "../home";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 export default function FilterCard({ value ,filter}) {
 
-  const [searchValue,setSearchValue]=useState("")
+  const [search,setSearch]=useState("")
+
   const store=useContext(actualPagination);
-  const handleSearch=(event)=>{
-    axios.post("http://localhost:3000/search",{searchValue:searchValue}).then(res=>{window.location.reload();})
-  }
+  // const handleSearch=(event)=>{
+  //   filter.setSearchValue(search)
+  //   // axios.post("http://localhost:3000/search",{searchValue:searchValue}).then(res=>{window.location.reload();})
+
+  // }
   return (
     <div
-      className={`w-1/5 h-full  border-r-black border-r-2 ${
+      className={`w-1/5 h-screen bg-red-500  border-r-black border-r-2 ${
         value == "hidden"
           ? "hidden"
           : "flex flex-col items-center justify-around"
       }`}
     >
-      <div className="w-full flex flex-col items-center space-y-2">
+      <div className="w-full flex items-center justify-center ">
 
         <input
-          className="w-5/6 h-10 border-black border-2 rounded-md "
+          className="w-full  h-8 border-black border-2 rounded-md "
           type="text"
           placeholder="search product here"
-          onChange={(event)=>setSearchValue(event.target.value)}
+          onChange={(event)=>filter.setSearchValue(event.target.value)}
         />
-        <button onClick={handleSearch} className="bg-yellow-500 text-4xl text-blue-950 font-bold p-2 rounded-lg">Search</button>
       </div>
 
       <select
@@ -33,11 +37,21 @@ export default function FilterCard({ value ,filter}) {
         class="form-select"
         aria-label="Default select example"
       >
-        <option>Category</option>
+        <option value="">Category</option>
         <option value="Laptops">Laptops</option>
         <option value="Smartphones">Smartphones</option>
+        <option value="Monitors">Monitors</option>
+        <option value="Accessories">Accessories</option>
+        <option value="Speakers">Speakers</option>
+        <option value="Networking">Networking</option>
+        <option value="Tablets">Tablets</option>
+        <option value="Cameras">Cameras</option>
+        <option value="Consoles">Consoles</option>
+        <option value="Desktops">Desktops</option>
+        <option value="Televisions">Televisions</option>
+
       </select>
-      <div className="w-full flex flex-col items-center space-y-2">
+      <div className="w-full flex flex-col items-center ">
         <label htmlFor="customRange1" class="form-label">
           Min Price
         </label>
@@ -66,7 +80,6 @@ export default function FilterCard({ value ,filter}) {
           id="customRange2"
           value={filter.fMaxPrice}
           onChange={(event) => {
-            console.log("yes")
             filter.setFMaxPrice(event.target.value);
           }}
         />

@@ -9,6 +9,7 @@ route.get("/list-products", async (request, response) => {
   const category=request.query.category;
   const minPrice=request.query.minPrice;
   const maxPrice=request.query.maxPrice;
+  const search=request.query.search;
   let sortCriteria;
 
   switch (sort) {
@@ -28,32 +29,32 @@ route.get("/list-products", async (request, response) => {
       sortCriteria = {}; // Default no sorting
   }
 
-  if(request.session.search){
-    const searchValue=request.session.search.searchValue;
-    return response.json(await Product.find({name:searchValue}))
-  }
-  if (category==""&&minPrice==5000&&maxPrice==5000) return response.json(await Product.find().sort(sortCriteria));
+  
+  if (category==""&&minPrice==5000&&maxPrice==5000&&search=="") return response.json(await Product.find().sort(sortCriteria));
   else { 
     if (category == "") {
       if (minPrice >= maxPrice) {
-        return response.json(await Product.find().sort(sortCriteria));
+        return response.json(await Product.find({name:{$regex:search,$options:'i'}
+        }).sort(sortCriteria));
       } else {
         return response.json(
           await Product.find({
             price: { $gt: minPrice, $lt: maxPrice },
+            name:{$regex:search,$options:'i'}
           }).sort(sortCriteria)
         );
       }
     }
     else{
         if (minPrice >= maxPrice) {
-            return response.json(await Product.find({category:category}).sort(sortCriteria));
+            return response.json(await Product.find({category:category,name:{$regex:search,$options:'i'}}).sort(sortCriteria));
           }
         else{
             return response.json(
                 await Product.find({
                   category: category,
                   price: { $gt: minPrice, $lt: maxPrice },
+                  name:{$regex:search,$options:'i'}
                 }).sort(sortCriteria)
               );
         }

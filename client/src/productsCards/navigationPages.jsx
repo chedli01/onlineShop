@@ -8,14 +8,14 @@ export default function NavigationPages({products}) {
  
 
   return (
-    <div className="w-full h-1/6  flex flex-col items-center justify-center space-y-4">
+    <div className="w-full h-20 flex flex-col items-center justify-center space-y-4">
       <nav aria-label="Page navigation example">
         <ul class="pagination">
           <li
             class="page-item"
             onClick={(event) => {
-              if (store.max-3 >= 3) {
-                store.setMax(store.max - 3);
+              if (store.max-9 >= 9) {
+                store.setMax(store.max - 9);
               }
             }}
           >
@@ -27,13 +27,13 @@ export default function NavigationPages({products}) {
           {
           products.map((item, index) => {
 
-            if(products.length%3!=0){
+            if(products.length%9!=0){
             
-            if ((index <= Math.floor(products.length / 3))) {
+            if ((index <= Math.floor(products.length / 9))) {
               return (
                 <li
                   onClick={async (event) => {
-                    await store.setMax((index + 1)*3);
+                    await store.setMax((index + 1)*9);
                   }}
                   class="page-item"
                   key={index}
@@ -46,11 +46,11 @@ export default function NavigationPages({products}) {
             }
           }
           else{
-            if (index <products.length / 3) {
+            if (index <products.length / 9) {
               return (
                 <li
                   onClick={async (event) => {
-                    await store.setMax((index + 1)*3);
+                    await store.setMax((index + 1)*9);
                   }}
                   class="page-item"
                   key={index}
@@ -69,7 +69,7 @@ export default function NavigationPages({products}) {
             class="page-item"
             onClick={(event) => {
               if (store.max < products.length) {
-                store.setMax(store.max + 3);
+                store.setMax(store.max + 9);
               }
             }}
           >

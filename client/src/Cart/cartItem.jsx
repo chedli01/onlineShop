@@ -56,7 +56,7 @@ export default function CartItem({ value }) {
       });
   };
   return (
-    <div className="w-full h-32 flex items-center justify-between relative  border-black border-2 border-l-0 border-r-0 p-2 hover:shadow-lg hover:shadow-blue-950 hover:bg-gray-500">
+    <div className="w-full h-32 flex items-center justify-between relative  border-black border-2 border-l-0 border-r-0  hover:shadow-lg hover:shadow-blue-950 hover:bg-gray-500">
       <FontAwesomeIcon
         onClick={handleDelete}
         className="absolute top-0 left-0 text-4xl text-red-600"
@@ -67,12 +67,12 @@ export default function CartItem({ value }) {
       <h1 className="text-2xl">{value.price} TND</h1>
       <h1 className="text-2xl">x{value.quantity}</h1>
       <FontAwesomeIcon
-        className="text-2xl border-2 border-black rounded-full p-1 bg-gray-500"
+        className="text-2xl border-2 border-black rounded-full  bg-gray-500"
         icon={faPlus}
         onClick={handlePlus}
       />
       <FontAwesomeIcon
-        className="text-2xl border-2 border-black rounded-full p-1 bg-gray-500"
+        className="text-2xl border-2 border-black rounded-full  bg-gray-500"
         icon={faMinus}
         onClick={handleMinus}
       />
