@@ -19,16 +19,14 @@ route.post("/login", async (request, response) => {
 
 
     
-    request.session.email = findUser.email;
-    request.session.name = findUser.username;
 
-    response.cookie('loginCookie',{email:request.session.email},{
+    response.cookie('loginCookie',{email:findUser.email,name:findUser.username},{
       maxAge:1000*60*60*24,
       secure:false,
-      httpOnly:true
+      httpOnly:true,
+      sameSite: 'lax'
     })
-     request.session.cart=[];
-    
+     request.session.cart=[];    
 
     return response.json(findUser);
   }

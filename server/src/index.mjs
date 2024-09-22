@@ -15,9 +15,13 @@ import sendEmailRouter from "../mailing/sendEmail.mjs";
 import generatePdfRouter from "./pdf/generate.mjs";
 import checkoutRouter from "./cart/checkout.mjs";
 import quantityRouter from "./cart/manageQuantity.mjs";
-import dotenv from "dotenv";
 import stockManagementRouter from "./stock/stockManagement.mjs";
+import orderRouter from "./orders/orderList.mjs"
+import notifRouter from "./notifications/sendNotif.mjs"
+import mongoose from "mongoose";
 import Product from "./mongodb/productSchema.mjs";
+import User from "./mongodb/userSchema.mjs";
+import Order from "./mongodb/orderSchema.mjs";
 
 const app = express();
 
@@ -34,7 +38,7 @@ app.use(
     saveUninitialized: false,
     resave: false,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 2,
+      maxAge: 1000 * 60 * 60 * 24,
       secure: false,
     },
   })
@@ -55,6 +59,8 @@ app.use(generatePdfRouter);
 app.use(checkoutRouter);
 app.use(quantityRouter);
 app.use(stockManagementRouter);
+app.use(orderRouter);
+app.use(notifRouter);
 
 ////////////////////////
 const PORT = process.env.PORT || 3000;

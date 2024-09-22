@@ -25,6 +25,7 @@ route.post("/sendemail", async (req, res) => {
     adress: req.body.adress,
     tableData: req.session.cart,
     total: req.body.total,
+    orderID:req.body.orderID,
   };
 
   const htmlPage = fs.readFileSync(
@@ -67,7 +68,7 @@ route.post("/sendemail", async (req, res) => {
     },
   };
   const orders=await Order.find();
-  const id=orders[orders.length-1].id+1;
+  const id=orders?orders[orders.length-1].id+1:0;
   const productIds = await req.session.cart.map((item) => {
     return item.id;
   });
@@ -81,7 +82,7 @@ route.post("/sendemail", async (req, res) => {
   Order.create({
     id: id,
     productIds: productIds,
-    userEmail: req.session.email,
+    userEmail: req.cookies.loginCookie.email,
     productQuantity: productQuantity,
     orderDate: new Date(),
     orderStatus: "pending",

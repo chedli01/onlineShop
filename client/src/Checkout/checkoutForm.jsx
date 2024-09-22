@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function CheckoutForm({ total,products }) {
@@ -7,13 +7,26 @@ export default function CheckoutForm({ total,products }) {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [adress, setAdress] = useState("");
+  const [orderID,setOrderID]= useState(0);
   const navigate=useNavigate();
+
+
+  useEffect(()=>{
+    axios.get("http://localhost:3000/listOrders").then((res)=>{
+      setOrderID(res.data[res.data.length-1].id+1)
+      
+    })
+
+  },[])
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     products.map((item)=>{
       axios.post(`http://localhost:3000/minusStock/${item.id}`,{quantity:item.quantity});
 
     })
+    
 
     axios.post("http://localhost:3000/sendemail", {
 
@@ -22,6 +35,7 @@ export default function CheckoutForm({ total,products }) {
       adress:adress,
       total:total,
       date:new Date().toDateString(),
+      orderID: orderID,
       email: email,
       subject: "verifying checkout",
       text:"Dear Client, This is an invoice of your pursaches on our site. Thank you for visiting us",

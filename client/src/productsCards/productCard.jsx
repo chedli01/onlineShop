@@ -35,7 +35,7 @@ export default function ProductCard({ value }) {
       </div>
       <div className="w-full h-1/5 flex justify-center items-center">
         <button
-          className="w-1/2 h-20 border-2 border-black text-2xl rounded-xl bg-blue-950 text-yellow-500"
+          className="w-1/2 h-10 border-2 border-black text-2xl rounded-xl bg-blue-950 text-yellow-500"
           onClick={async (event) => {
             if (store.open == "closed") {
               store.setScroll(window.scrollY)

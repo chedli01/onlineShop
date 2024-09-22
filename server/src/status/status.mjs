@@ -5,7 +5,7 @@ const route = Router();
 
 route.get("/status",(request,response)=>{
 
-    if(request.cookies.loginCookie) return response.json({connected:true,email:request.session.email,name:request.session.name})
+    if(request.cookies.loginCookie) return response.json({connected:true,email:request.cookies.loginCookie.email,name:request.cookies.loginCookie.name})
     else return response.json({connected:false})
     
 

@@ -24,7 +24,7 @@ export default function Login() {
     event.preventDefault();
     axios
       .post("http://localhost:3000/login", { email: email, password: password })
-      .then((res) => navigate("/home"))
+      .then((res) => navigate(`/home`))
       .catch((err) => alert(err.response.data.msg));
   };
 ////////////////////////

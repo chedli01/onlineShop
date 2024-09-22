@@ -1,18 +1,18 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "./Header/header";
 import FilterCard from "./filterBar/filterCard";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ProductsContainer from "./productsCards/productsContainer";
 import NavigationPages from "./productsCards/navigationPages";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+
 import OrderBy from "./filterBar/orderBy";
 export const actualPagination = createContext();
 export const cartManagment = createContext();
 export default function Home() {
   axios.defaults.withCredentials = true;
+
 
   const [name, setName] = useState("");
 
@@ -28,10 +28,12 @@ export default function Home() {
   const [fCategory, setFCategory] = useState("");
   const [fMinPrice, setFMinPrice] = useState(5000);
   const [fMaxPrice, setFMaxPrice] = useState(5000);
-  const [searchValue,setSearchValue]=useState("");
-  const [open,setOpen] = useState("closed");
-  const [scroll,setScroll]=useState(0);
-  const [detailed,setDetailed]=useState(false)
+  const [searchValue, setSearchValue] = useState("");
+  const [open, setOpen] = useState("closed");
+  const [scroll, setScroll] = useState(0);
+  const [detailed, setDetailed] = useState(false);
+  const [notifs,setNotifs]=useState([])
+
 
 
   const stack = {
@@ -43,9 +45,25 @@ export default function Home() {
     fMaxPrice,
     fMinPrice,
     searchValue,
+  };
+
+
+  useEffect(()=>{    
+    const eventSource=new EventSource(`http://localhost:3000/notifs`,{withCredentials:true});
+    eventSource.onmessage=(event)=>{
+      setNotifs((prev)=>[...prev,event.data]);      
+      
+    }
     
 
-  };
+  return  ()=>{
+    eventSource.close();
+  }
+
+  
+  
+ 
+},[])
 
   useEffect(() => {
     axios
@@ -53,7 +71,7 @@ export default function Home() {
         `http://localhost:3000/list-products?sort=${sortValue}&category=${fCategory}&minPrice=${fMinPrice}&maxPrice=${fMaxPrice}&search=${searchValue}`
       )
       .then((res) => setProducts(res.data));
-  }, [sortValue, fCategory, fMaxPrice, fMinPrice,searchValue]);
+  }, [sortValue, fCategory, fMaxPrice, fMinPrice, searchValue]);
 
   useEffect(() => {
     axios.get("http://localhost:3000/cart").then((res) => {
@@ -72,11 +90,11 @@ export default function Home() {
     setCart,
     open,
     setOpen,
-    scroll,setScroll,
+    scroll,
+    setScroll,
 
-    detailed,setDetailed
-    
-
+    detailed,
+    setDetailed,
   };
   const states = { cart, setCart };
   const navigate = useNavigate();
@@ -103,21 +121,22 @@ export default function Home() {
     <actualPagination.Provider value={store}>
       <cartManagment.Provider value={states}>
         <div className="w-screnn overflow-x-hidden ">
-          <Header />
+          <Header notifs={notifs} />
           <div className="w-screen h-full flex flex-1  ">
-          <FilterCard value={filterBarStatus} filter={stack}  />
-            
+            <FilterCard value={filterBarStatus} filter={stack} />
+
             <div
               className={`h-full flex flex-col   relative  ${
                 filterBarStatus == "hidden" ? "w-full" : "w-5/6"
               }`}
             >
-              <OrderBy setSortValue={setSortValue} open={open} setDetailed={setDetailed}  />
-              
+              <OrderBy
+                setSortValue={setSortValue}
+                open={open}
+                setDetailed={setDetailed}
+              />
 
-              <ProductsContainer  products={products} >
-              
-                </ProductsContainer>
+              <ProductsContainer products={products}></ProductsContainer>
               {/* {filterBarStatus == "hidden" ? (
                 <FontAwesomeIcon
                   onClick={handleShow}
