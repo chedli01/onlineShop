@@ -7,6 +7,7 @@ import axios from "axios";
 import AboutUs from "./aboutus";
 import ProductDetails from "./productsCards/productOverview";
 import CheckoutPage from "./Checkout/CheckoutPage";
+import AdminDash from "./Admin/adminDash";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/login" element={<Login/>}/>
         <Route path="/aboutus" element={<AboutUs/>}/>
         <Route path="/checkout" element={<CheckoutPage />}/>
+        <Route path="/admindash" element={<AdminDash/>}/>
       </Routes>
     </Router>
   );

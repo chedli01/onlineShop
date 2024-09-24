@@ -42,7 +42,7 @@ export default function ProductOverview({ value }) {
   };
 
   return (
-    <div className="w-full h-full  flex flex-col items-center justify-between relative">
+    <div className="w-full h-full  flex flex-col items-center justify-between relative group">
       <div
         className="w-full h-2/3 bg-cover bg-center "
         style={{ backgroundImage: `url(${value.imageUrl})` }}
@@ -51,9 +51,11 @@ export default function ProductOverview({ value }) {
       <h1 className="text-4xl">{value.price} TND</h1>
       <FontAwesomeIcon
         onClick={handleAdd}
-        className=" absolute left-0 top-1 text-3xl"
+        className="absolute left-0 top-1 text-3xl cursor-pointer"
         icon={faPlus}
       />
+      <span className=" absolute left-0 top-10 text-black  bg-white border border-gray-400 hidden group-hover:block">add to cart</span>
     </div>
+    
   );
 }

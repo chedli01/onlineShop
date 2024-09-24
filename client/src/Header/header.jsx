@@ -10,7 +10,7 @@ import {
   faBell,
 } from "@fortawesome/free-solid-svg-icons";
 import CartElement from "../Cart/cartElement";
-export default function Header({ notifs }) {
+export default function Header({ notifs , setNotifs}) {
   const [status, setStatus] = useState("");
   const [cartStatus, setCartStatus] = useState("down");
   const [total, setTotal] = useState(0);
@@ -75,7 +75,7 @@ export default function Header({ notifs }) {
         <li
           onClick={(event) => {
             if (display == "hidden") setDisplay("flex");
-            else setDisplay("hidden");
+            else {setDisplay("hidden");setNotifs([])}
           }}
           className="text-6xl text-blue-950 font-extrabold"
         >

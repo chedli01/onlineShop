@@ -1,14 +1,14 @@
 import axios from "axios";
 import { useContext, useState } from "react";
 import { actualPagination } from "../home";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
-export default function FilterCard({ value ,filter}) {
+import Listen from "../audio";
 
-  const [search,setSearch]=useState("")
+export default function FilterCard({ value, filter }) {
+  const [search, setSearch] = useState("");
+  const [transcript,setTranscript]=useState("");
 
-  const store=useContext(actualPagination);
+  const store = useContext(actualPagination);
   // const handleSearch=(event)=>{
   //   filter.setSearchValue(search)
   //   // axios.post("http://localhost:3000/search",{searchValue:searchValue}).then(res=>{window.location.reload();})
@@ -23,13 +23,14 @@ export default function FilterCard({ value ,filter}) {
       }`}
     >
       <div className="w-full flex items-center justify-center ">
-
         <input
           className="w-full  h-8 border-black border-2 rounded-md "
           type="text"
           placeholder="search product here"
-          onChange={(event)=>filter.setSearchValue(event.target.value)}
+          onChange={(event) => filter.setSearchValue(event.target.value)}
+          value={filter.searchValue}
         />
+        <Listen transcript={filter} />
       </div>
 
       <select
@@ -40,16 +41,10 @@ export default function FilterCard({ value ,filter}) {
         <option value="">Category</option>
         <option value="Laptops">Laptops</option>
         <option value="Smartphones">Smartphones</option>
-        <option value="Monitors">Monitors</option>
-        <option value="Accessories">Accessories</option>
-        <option value="Speakers">Speakers</option>
-        <option value="Networking">Networking</option>
-        <option value="Tablets">Tablets</option>
-        <option value="Cameras">Cameras</option>
-        <option value="Consoles">Consoles</option>
-        <option value="Desktops">Desktops</option>
-        <option value="Televisions">Televisions</option>
 
+        <option value="Tablets">Tablets</option>
+
+        <option value="Televisions">Televisions</option>
       </select>
       <div className="w-full flex flex-col items-center ">
         <label htmlFor="customRange1" class="form-label">
@@ -85,7 +80,6 @@ export default function FilterCard({ value ,filter}) {
         />
         <span>{filter.fMaxPrice} TND</span>
       </div>
-      
     </div>
   );
 }

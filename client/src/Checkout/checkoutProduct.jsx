@@ -8,7 +8,7 @@ export default function CheckoutProduct({ value }) {
        axios.post("http://localhost:3000/delete-item",{id:value.id}).then((res) => window.location.reload());
       }
   return (
-    <div className="w-full relative h-40 flex items-center justify-between border-black border-2 rounded-lg  bg-yellow-400">
+    <div className="w-full relative h-40 flex items-center justify-between border-black border-2 rounded-lg  ">
       <div
         className="w-1/4 h-full  bg-center bg-cover "
         style={{ backgroundImage: `url(${value.image})` }}

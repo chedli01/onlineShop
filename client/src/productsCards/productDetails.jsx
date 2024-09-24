@@ -23,7 +23,7 @@ export default function ProductDetails({ value }) {
       setAlertMsg(`Only ${quantityInStock} Product Found In Stock`);
 
       setAlertState("exist");
-    } else if (isNaN(quantity)) {
+    } else if (isNaN(quantity)|| quantity==0) {
       setAlertMsg("Please Enter A Valid Number ");
       setAlertState("exist");
     } else {

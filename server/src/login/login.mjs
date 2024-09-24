@@ -26,7 +26,7 @@ route.post("/login", async (request, response) => {
       httpOnly:true,
       sameSite: 'lax'
     })
-     request.session.cart=[];    
+    request.session.cart=[];    
 
     return response.json(findUser);
   }

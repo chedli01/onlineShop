@@ -13,7 +13,6 @@ export const cartManagment = createContext();
 export default function Home() {
   axios.defaults.withCredentials = true;
 
-
   const [name, setName] = useState("");
 
   const [max, setMax] = useState(9);
@@ -32,9 +31,7 @@ export default function Home() {
   const [open, setOpen] = useState("closed");
   const [scroll, setScroll] = useState(0);
   const [detailed, setDetailed] = useState(false);
-  const [notifs,setNotifs]=useState([])
-
-
+  const [notifs, setNotifs] = useState([]);
 
   const stack = {
     setFMaxPrice,
@@ -46,25 +43,41 @@ export default function Home() {
     fMinPrice,
     searchValue,
   };
+  //////////////////////
+  useEffect(() => {
+    const eventSource = new EventSource(`http://localhost:3000/notifs`, {
+      withCredentials: true,
+    });
+    eventSource.onmessage = (event) => {
+      setNotifs((prev) => [...prev, event.data]);
+    };
 
+    return () => {
+      eventSource.close();
+    };
+  }, []);
+  // // //////////////////
+  useEffect(() => {
+    const eventSource = new EventSource("http://localhost:3000/cart-notifs", {
+      withCredentials: true,
+    });
 
-  useEffect(()=>{    
-    const eventSource=new EventSource(`http://localhost:3000/notifs`,{withCredentials:true});
-    eventSource.onmessage=(event)=>{
-      setNotifs((prev)=>[...prev,event.data]);      
-      
-    }
-    
+    eventSource.addEventListener('update', (event) => {
+      if (cart.length != 0 && cart.length > JSON.parse(event.data).length) {
+        setCart(JSON.parse(event.data));
+      }
+    });
 
-  return  ()=>{
-    eventSource.close();
-  }
+    eventSource.addEventListener('notif', (event) => {
+      setNotifs((prev) => [...prev, event.data]);
+    });
 
-  
-  
- 
-},[])
+    return () => {
+      eventSource.close();
+    };
+  }, [cart]);
 
+  /////////////////////////
   useEffect(() => {
     axios
       .get(
@@ -121,7 +134,7 @@ export default function Home() {
     <actualPagination.Provider value={store}>
       <cartManagment.Provider value={states}>
         <div className="w-screnn overflow-x-hidden ">
-          <Header notifs={notifs} />
+          <Header setNotifs={setNotifs} notifs={notifs} />
           <div className="w-screen h-full flex flex-1  ">
             <FilterCard value={filterBarStatus} filter={stack} />
 

@@ -3,51 +3,71 @@ import Product from "../mongodb/productSchema.mjs";
 import mongoose from "mongoose";
 import Order from "../mongodb/orderSchema.mjs";
 
-
 const route = Router();
 
+route.get("/notifs", (req, res) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
 
+  const changeStream = Order.watch([], { fullDocument: "updateLookup" });
+  changeStream.on("change", async (change) => {
+    if (
+      change.updateDescription.updatedFields.orderStatus &&
+      change.fullDocument.userEmail == req.cookies.loginCookie.email
+    ) {
+      res.write(
+        `data: Your Order number ${change.fullDocument.id} Status Has Been Updated To ${change.updateDescription.updatedFields.orderStatus}\n\n`
+      );
+    }
+  });
 
+  req.on("close", () => {
+    changeStream.close();
+    res.end();
+  });
+});
 
+route.get("/cart-notifs", (req, res) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
 
-route.get("/notifs",(req,res)=>{
+  const quantityStream = Product.watch([], { fullDocument: "updateLookup" });
+  quantityStream.on("change", async (change) => {
+    if (change.updateDescription.updatedFields.quantity) {
+      if (req.session.cart) {
+        const result = req.session.cart.find(
+          (item) => item.id == change.fullDocument.id
+        );
+        if (
+          result &&
+          result.quantity > change.updateDescription.updatedFields.quantity
+        ) {
+          req.session.cart = req.session.cart.filter(
+            (item) => item.id != change.fullDocument.id
+          );
 
-    res.setHeader("Content-Type","text/event-stream");
-    res.setHeader("Cache-Control","no-cache");
-    res.setHeader("Connection","keep-alive");
+          res.write("event: notif\n")
+          res.write(`data: The Product   ${change.fullDocument.name} in your cart is now out of stock Please Refresh Your Cart\n\n`);
 
-    const changeStream=Order.watch([],{fullDocument: 'updateLookup' });
-    changeStream.on("change",async(change)=>{
-        if(change.updateDescription.updatedFields.orderStatus&&change.fullDocument.userEmail==req.cookies.loginCookie.email){
-            res.write(`data: Your Order number ${change.fullDocument.id} Status Has Been Updated To ${change.updateDescription.updatedFields.orderStatus}\n\n`);
+          
+          setInterval(()=>{
+            res.write("event: update\n");
+          res.write(`data: ${JSON.stringify(req.session.cart)}\n\n`);
 
-            
-           
+          },5000)
+         
+          
         }
-        
-        
-    });
+      }
+    }
+  });
 
-
-    req.on("close",()=>{
-        changeStream.close();
-        res.end();
-    })
-
-
-   
-
-    
-
-
-
-
-
-    
-
-})
+  req.on("close", () => {
+    quantityStream.close();
+    res.end();
+  });
+});
 
 export default route;
-
-
-
