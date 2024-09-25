@@ -19,6 +19,8 @@ import stockManagementRouter from "./stock/stockManagement.mjs";
 import orderRouter from "./orders/orderList.mjs"
 import notifRouter from "./notifications/sendNotif.mjs"
 import userRouter from "./admin/users.mjs"
+import adminlogRouter from "./admin/login.mjs"
+import oauthRouter from "./admin/oauth.mjs"
 import mongoose from "mongoose";
 import Product from "./mongodb/productSchema.mjs";
 import User from "./mongodb/userSchema.mjs";
@@ -63,6 +65,8 @@ app.use(stockManagementRouter);
 app.use(orderRouter);
 app.use(notifRouter);
 app.use(userRouter)
+app.use(adminlogRouter)
+app.use(oauthRouter)
 
 ////////////////////////
 const PORT = process.env.PORT || 3000;

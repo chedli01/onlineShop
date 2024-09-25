@@ -8,6 +8,7 @@ import AboutUs from "./aboutus";
 import ProductDetails from "./productsCards/productOverview";
 import CheckoutPage from "./Checkout/CheckoutPage";
 import AdminDash from "./Admin/adminDash";
+import AdminLog from "./Admin/adminLog";
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/aboutus" element={<AboutUs/>}/>
         <Route path="/checkout" element={<CheckoutPage />}/>
         <Route path="/admindash" element={<AdminDash/>}/>
+        <Route path="/adminlogin" element={<AdminLog/>}/>
       </Routes>
     </Router>
   );
