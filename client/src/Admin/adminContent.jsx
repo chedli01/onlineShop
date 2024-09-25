@@ -1,19 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Tables from './Tables/tables';
+import Reviews from './reviews';
+import Analytics from './analytics';
 
-export default function AdminContent(){
+export default function AdminContent({page}){
     return(
-        <div className="w-5/6 h-full">
-            <nav className="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
-  
-</nav>
-
-<nav className="navbar bg-primary" data-bs-theme="dark">
-  
-</nav>
-
-<nav className="navbar" style="background-color: #e3f2fd;">
-  
-</nav>
+        <div className='w-5/6 h-full bg-zinc-500'>
+            <Tables active={page.activePage}/>
+            <Reviews active={page.activePage} />
+            <Analytics  active={page.activePage}/>
 
         </div>
     )
