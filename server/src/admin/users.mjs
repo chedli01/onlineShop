@@ -1,6 +1,7 @@
 import { Router } from "express";
 import User from "../mongodb/userSchema.mjs";
 import Product from "../mongodb/productSchema.mjs";
+import Order from "../mongodb/orderSchema.mjs";
 
 const route = Router();
 
@@ -37,5 +38,16 @@ route.get("/getProducts", async (request, response) => {
     }
   }
 });
+
+route.get("/getOrders",async(req,res)=>{
+  const result=await Order.find();
+  res.json(result)
+})
+
+route.post("/editOrder/:id",async(req,res)=>{
+  const id=req.params.id;
+  await Order.updateOne({id:id},{$set:{orderStatus:req.body.status}})
+  res.sendStatus(200)
+})
 
 export default route;

@@ -53,7 +53,7 @@ export default function AdminLog(){
           }
       })
       
-  },[])
+  })
     
     return(
         <MDBContainer className="w-screen h-screen bg-zinc-600" fluid>
