@@ -1,5 +1,7 @@
 import { Router } from "express";
 import {OAuth2Client} from "google-auth-library";
+import Admin from "../mongodb/adminSchema.mjs";
+import jwt from "jsonwebtoken"
 
 const route = Router();
 
@@ -18,7 +20,8 @@ async function getUserData(access_token) {
     const code = req.query.code;
 
     try {
-        const redirectURL = "http://127.0.0.1:3000/oauth"
+        
+        const redirectURL = "http://localhost:3000/oauth"
         const oAuth2Client = new OAuth2Client(
             process.env.CLIENT_ID,
             process.env.CLIENT_SECRET,
@@ -31,7 +34,27 @@ async function getUserData(access_token) {
         const user = oAuth2Client.credentials;
         // console.log('credentials',user.email);
         const data=await getUserData(oAuth2Client.credentials.access_token);
-        console.log(data)
+        const email=data.email;
+
+    const findAdmin=await Admin.findOne({email:email});
+   
+    if(findAdmin){
+      res.cookie('adminLogin',{username:findAdmin.username,email:email}, {
+        maxAge:1000*60*60,
+        httpOnly: true,
+        secure: true, // Set to true if using HTTPS
+        sameSite: 'None', // Important for cross-origin
+    });
+      
+
+    
+
+        
+        res.redirect(303, `http://localhost:5173/admindash`);
+    }
+    else{
+        res.redirect(303, 'http://localhost:5173/adminlogin')
+    }
 
 
       } catch (err) {
@@ -39,7 +62,10 @@ async function getUserData(access_token) {
     }
 
 
-    res.redirect(303, 'http://localhost:5173/admindash');
+    
+
+
+    
   
 
 

@@ -8,7 +8,7 @@ import AboutUs from "./aboutus";
 import ProductDetails from "./productsCards/productOverview";
 import CheckoutPage from "./Checkout/CheckoutPage";
 import AdminDash from "./Admin/adminDash";
-import AdminLog from "./Admin/adminLog";
+import AdminLog from "./Admin/Login/adminLog";
 
 
 function App() {

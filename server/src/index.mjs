@@ -21,10 +21,9 @@ import notifRouter from "./notifications/sendNotif.mjs"
 import userRouter from "./admin/users.mjs"
 import adminlogRouter from "./admin/login.mjs"
 import oauthRouter from "./admin/oauth.mjs"
-import mongoose from "mongoose";
-import Product from "./mongodb/productSchema.mjs";
-import User from "./mongodb/userSchema.mjs";
-import Order from "./mongodb/orderSchema.mjs";
+import adminStatusRouter from "./admin/status.mjs"
+
+
 
 const app = express();
 
@@ -41,8 +40,10 @@ app.use(
     saveUninitialized: false,
     resave: false,
     cookie: {
+      sameSite: 'None',       // Allows cross-origin cookies
+
       maxAge: 1000 * 60 * 60 * 24,
-      secure: false,
+      secure: true,
     },
   })
 );
@@ -67,7 +68,7 @@ app.use(notifRouter);
 app.use(userRouter)
 app.use(adminlogRouter)
 app.use(oauthRouter)
-
+app.use(adminStatusRouter)
 ////////////////////////
 const PORT = process.env.PORT || 3000;
 
