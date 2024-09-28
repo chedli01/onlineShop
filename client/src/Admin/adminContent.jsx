@@ -10,6 +10,7 @@ export default function AdminContent({page}){
   const [recieved,setRecieved]=useState([]);
   const [sent,setSent]=useState([]);
   const [target,setTarget]=useState("");
+  
 
 
   useEffect(()=>{
