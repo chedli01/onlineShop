@@ -111,9 +111,11 @@ wss.on("connection",(ws,req)=>{
   const client=cookies.loginCookie;
   if(admin){
     admins.set(admin.email,ws);
+    
   }
   else{
     clients.set(client.email,ws);
+    
   }
 
   ws.on("message",(message)=>{
@@ -135,7 +137,7 @@ wss.on("connection",(ws,req)=>{
 
     }
   })
-  ws.on("close",()=>{ws.close();})
+  // ws.on("close",()=>{ws.close();})
 
 })
 ////////////////////////

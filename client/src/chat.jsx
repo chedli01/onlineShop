@@ -32,7 +32,7 @@ export default function Chat({ chat }) {
     <div
       className={`w-full h-5/6 ${
         chat == true
-          ? "flex flex-col space-y-4 border border-black bg-neutral-500  z-10 relative"
+          ? "flex flex-col space-y-4 border border-black bg-zinc-500    z-10 relative"
           : "hidden"
       }`}
     >

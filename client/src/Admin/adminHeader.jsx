@@ -33,6 +33,9 @@ const Sidebar = ({page}) => {
             <NavLink onClick={(event)=>page.setActivePage("analytics")} >
               <CDBSidebarMenuItem icon="chart-line">Analytics</CDBSidebarMenuItem>
             </NavLink>
+            <NavLink onClick={(event)=>page.setActivePage("chat")} >
+              <CDBSidebarMenuItem icon='chat'>Chat</CDBSidebarMenuItem>
+            </NavLink>
 
           </CDBSidebarMenu>
         </CDBSidebarContent>
