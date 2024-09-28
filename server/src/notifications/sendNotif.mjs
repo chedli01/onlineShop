@@ -48,17 +48,15 @@ route.get("/cart-notifs", (req, res) => {
             (item) => item.id != change.fullDocument.id
           );
 
-          res.write("event: notif\n")
-          res.write(`data: The Product   ${change.fullDocument.name} in your cart is now out of stock Please Refresh Your Cart\n\n`);
+          res.write("event: notif\n");
+          res.write(
+            `data: The Product   ${change.fullDocument.name} in your cart is now out of stock Please Refresh Your Cart\n\n`
+          );
 
-          
-          setInterval(()=>{
+          setInterval(() => {
             res.write("event: update\n");
-          res.write(`data: ${JSON.stringify(req.session.cart)}\n\n`);
-
-          },5000)
-         
-          
+            res.write(`data: ${JSON.stringify(req.session.cart)}\n\n`);
+          }, 5000);
         }
       }
     }
@@ -66,6 +64,48 @@ route.get("/cart-notifs", (req, res) => {
 
   req.on("close", () => {
     quantityStream.close();
+    res.end();
+  });
+});
+
+route.get("/price-notifs", async (req, res) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+
+  const changeStream = Product.watch([], { fullDocument: "updateLookup" });
+
+  changeStream.on("change", async (change) => {
+    if (change.updateDescription.updatedFields.price) {
+      const findProduct = await req.session.cart.find(
+        (item) => item.id == change.fullDocument.id
+      );
+      if (findProduct) {
+        const newCart = await req.session.cart.map((item) => {
+          if (item.id == change.fullDocument.id)
+            return {
+              ...item,
+              price: change.updateDescription.updatedFields.price,
+            };
+          else return item;
+        });
+        req.session.cart = newCart;
+
+        res.write("event: notif\n");
+        res.write(
+          `data: The price of the product ${change.fullDocument.name} is updated to ${change.fullDocument.price}\n\n`
+        );
+
+        setInterval(() => {
+          res.write("event: update\n");
+          res.write(`data: ${JSON.stringify(req.session.cart)}\n\n`);
+        }, 5000);
+      }
+    }
+  });
+
+  req.on("close", () => {
+    changeStream.close();
     res.end();
   });
 });

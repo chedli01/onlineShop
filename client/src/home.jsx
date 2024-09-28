@@ -6,8 +6,11 @@ import FilterCard from "./filterBar/filterCard";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ProductsContainer from "./productsCards/productsContainer";
 import NavigationPages from "./productsCards/navigationPages";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faComment, faL} from "@fortawesome/free-solid-svg-icons";
 
 import OrderBy from "./filterBar/orderBy";
+import Chat from "./chat";
 export const actualPagination = createContext();
 export const cartManagment = createContext();
 export default function Home() {
@@ -32,6 +35,7 @@ export default function Home() {
   const [scroll, setScroll] = useState(0);
   const [detailed, setDetailed] = useState(false);
   const [notifs, setNotifs] = useState([]);
+  const [chat,setChat]=useState(false)
 
   const stack = {
     setFMaxPrice,
@@ -43,6 +47,37 @@ export default function Home() {
     fMinPrice,
     searchValue,
   };
+  ///////////////////////////////
+  useEffect(()=>{
+    const eventSource=new EventSource("http://localhost:3000/price-notifs",{withCredentials: true});
+
+    eventSource.addEventListener("notif",(event)=>{
+      setNotifs((prev)=>[...prev,event.data])
+
+    });
+    eventSource.addEventListener("update",(event)=>{
+      // console.log(event.data)
+
+      setCart(JSON.parse(event.data))
+    })
+    return () => {
+      eventSource.close();
+    };
+
+  },[])
+
+
+
+
+
+
+
+
+
+
+
+
+
   //////////////////////
   useEffect(() => {
     const eventSource = new EventSource(`http://localhost:3000/notifs`, {
@@ -62,13 +97,13 @@ export default function Home() {
       withCredentials: true,
     });
 
-    eventSource.addEventListener('update', (event) => {
+    eventSource.addEventListener("update", (event) => {
       if (cart.length != 0 && cart.length > JSON.parse(event.data).length) {
         setCart(JSON.parse(event.data));
       }
     });
 
-    eventSource.addEventListener('notif', (event) => {
+    eventSource.addEventListener("notif", (event) => {
       setNotifs((prev) => [...prev, event.data]);
     });
 
@@ -129,6 +164,23 @@ export default function Home() {
       }
     });
   }, []);
+  //////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /////////////////////////////////
+
+  
 
   return (
     <actualPagination.Provider value={store}>
@@ -150,24 +202,51 @@ export default function Home() {
               />
 
               <ProductsContainer products={products}></ProductsContainer>
-              {/* {filterBarStatus == "hidden" ? (
-                <FontAwesomeIcon
-                  onClick={handleShow}
-                  className="fixed left-0 top-1/2 h-11 w-10"
-                  icon={faArrowRight}
-                />
-              ) : (
-                <FontAwesomeIcon
-                  onClick={handleHide}
-                  className="fixed left-96 -translate-x-3 top-1/2 h-20 w-10"
-                  icon={faArrowLeft}
-                />
-              )} */}
               <NavigationPages products={products} />
             </div>
           </div>
+          <div className="w-1/5 h-5/6 fixed left-2 bottom-0 ">
+          <Chat chat={chat} />
+          <FontAwesomeIcon onClick={()=>{if(!chat) setChat(true);else setChat(false)}} className="text-4xl" icon={faComment}  />
+      
+          </div>
         </div>
+       
+        
       </cartManagment.Provider>
     </actualPagination.Provider>
   );
 }
+
+// const [ws,setWs]=useState(null)
+// const [msg,setMsg]=useState("");
+// const [recieved,setRecieved]=useState([]);
+// const [sent,setSent]=useState([])
+// useEffect(()=>{
+//   const socket= new WebSocket(`ws://localhost:3000`);
+//   setWs(socket)
+//   socket.onopen = () => {
+//     console.log('WebSocket connection established');
+// };
+//   socket.onmessage=(event)=>{
+//     const { senderId, content } = JSON.parse(event.data);
+//     console.log(event.data)
+//     if(senderId=="chedli.masmoudi01@gmail.com"){
+//       setRecieved((prev)=>[...prev,content])
+
+//     }
+//     else{
+
+//       setSent((prev)=>[...prev,content])
+//     }
+  
+//   }
+
+// },[])
+
+
+    {/* <input type="text" onChange={(event)=>setMsg(event.target.value)} />
+          <button onClick={()=>{if(ws && msg.trim()) { const mesg = {sender:"chedli.masmoudi97@gmail.com", target:"chedli.masmoudi01@gmail.com",content: msg }; // Always target admin from client side
+      ws.send(JSON.stringify(mesg));setSent(msg)}}}>send</button>
+          <h1>Sent : {sent}</h1>
+          <h1>Recieved : {recieved}</h1> */}

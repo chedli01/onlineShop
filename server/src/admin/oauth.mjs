@@ -39,7 +39,7 @@ async function getUserData(access_token) {
     const findAdmin=await Admin.findOne({email:email});
    
     if(findAdmin){
-      res.cookie('adminLogin',{username:findAdmin.username,email:email}, {
+      res.cookie('adminLogin',{username:findAdmin.username,email:findAdmin.email}, {
         maxAge:1000*60*60,
         httpOnly: true,
         secure: true, // Set to true if using HTTPS
