@@ -188,7 +188,7 @@ export default function Home() {
         <div className="w-screnn overflow-x-hidden ">
           <Header setNotifs={setNotifs} notifs={notifs} />
           <div className="w-screen h-full flex flex-1  ">
-            <FilterCard value={filterBarStatus} filter={stack} />
+            <FilterCard chat={chat} value={filterBarStatus} filter={stack} />
 
             <div
               className={`h-full flex flex-col   relative  ${

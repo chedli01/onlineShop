@@ -137,7 +137,7 @@ wss.on("connection",(ws,req)=>{
 
     }
   })
-  // ws.on("close",()=>{ws.close();})
+  ws.on("close",()=>{ws.close();})
 
 })
 ////////////////////////

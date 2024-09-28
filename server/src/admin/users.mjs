@@ -50,4 +50,15 @@ route.post("/editOrder/:id",async(req,res)=>{
   res.sendStatus(200)
 })
 
+route.post("/editProductPrice/:id",async(req,res)=>{
+  const id=req.params.id;
+  await Product.updateOne({id:id},{$set:{price:parseInt(req.body.newPrice)}})
+  res.sendStatus(200)
+})
+
+route.post("/editProductQuantity/:id",async(req,res)=>{ 
+  const id = req.params.id;
+  await Product.updateOne({id:id},{$set:{quantity:parseInt(req.body.newQuantity)}})
+  res.sendStatus(200)
+})
 export default route;

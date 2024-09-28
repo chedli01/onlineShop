@@ -4,7 +4,7 @@ import { actualPagination } from "../home";
 
 import Listen from "../audio";
 
-export default function FilterCard({ value, filter }) {
+export default function FilterCard({ value, filter,chat }) {
   const [search, setSearch] = useState("");
   const [transcript,setTranscript]=useState("");
 
@@ -16,7 +16,7 @@ export default function FilterCard({ value, filter }) {
   // }
   return (
     <div
-      className={`w-1/5 h-fit space-y-12 ml-4 mt-40   border-black border-2 p-4 rounded-lg ${
+      className={`w-1/5 h-fit space-y-12 ml-4 mt-40 ${chat==false?"z-10":""}  border-black border-2 p-4 rounded-lg  ${
         value == "hidden"
           ? "hidden"
           : "flex flex-col items-center justify-around"

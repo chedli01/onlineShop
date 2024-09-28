@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import DataTable from "react-data-table-component";
+import { TextField} from '@mui/material';
+import axios from "axios";
+
 
 export default function ProductContent({ basicData,filter }) {
+  const [editIndex,setEditIndex]=useState(-1);
+  const [newPrice,setNewPrice]=useState(0);
+  const [newQuantity,setNewQuantity]=useState(-1);
 
   const columns = [
     {
@@ -16,10 +22,28 @@ export default function ProductContent({ basicData,filter }) {
     {
       name: "Product Quantity",
       selector: (row) => row.quantity,
+      cell: (row)=>(
+        editIndex==row.id?
+        (<TextField defaultValue={row.quantity} onChange={(event)=>setNewQuantity(event.target.value)} />):
+        (row.quantity)
+      )
     },
     {
       name: "Product Price",
       selector: (row) => row.price,
+      cell: (row)=>(
+        editIndex==row.id?
+
+        (<TextField defaultValue={row.price} onChange={(event)=>{setNewPrice(event.target.value)}} />):
+
+        (row.price)
+      
+
+
+
+      )
+        
+        
     },
     {
       name: "Action",
@@ -27,11 +51,22 @@ export default function ProductContent({ basicData,filter }) {
         <div>
           <button
             className="btn btn-primary"
-            onClick={() => alert(row.alpha2Code)}
+            onClick={() => setEditIndex(row.id)}
           >
             Edit
           </button>
-          <button className="btn btn-primary ml-2">Delete</button>
+          <button className="btn btn-primary ml-2" onClick={()=>{
+            if(newQuantity==-1)
+            axios.post(`http://localhost:3000/editProductPrice/${row.id}`,{newPrice:newPrice}).then(res=>window.location.reload())
+            else{
+              if(newPrice==0){axios.post(`http://localhost:3000/editProductQuantity/${row.id}`,{newQuantity:newQuantity}).then(res=>window.location.reload())}
+              else{
+                axios.post(`http://localhost:3000/editProductPrice/${row.id}`,{newPrice:newPrice});
+                axios.post(`http://localhost:3000/editProductQuantity/${row.id}`,{newQuantity:newQuantity}).then(res=>window.location.reload())
+                
+              }
+            }
+          }}>Save</button>
         </div>
       ),
     },
