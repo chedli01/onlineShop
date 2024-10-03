@@ -24,6 +24,11 @@ import oauthRouter from "./admin/oauth.mjs"
 import adminStatusRouter from "./admin/status.mjs"
 import contactRouter from "../mailing/contactUser.mjs"
 import chartRouter from "./admin/analytics.mjs"
+import profileRouter from "./password/passwordConfig.mjs  "
+import imageRouter from "./image/upload.mjs"
+import path from "path";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import {WebSocketServer} from "ws";
 import http from "http";
 
@@ -31,6 +36,8 @@ import http from "http";
 
 const app = express();
 const server=http.createServer(app);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 
 
@@ -56,6 +63,8 @@ app.use(
     },
   })
 );
+app.use('/uploads', express.static('uploads'));
+
 
 dbconfig();
 
@@ -74,12 +83,14 @@ app.use(quantityRouter);
 app.use(stockManagementRouter);
 app.use(orderRouter);
 app.use(notifRouter);
-app.use(userRouter)
-app.use(adminlogRouter)
-app.use(oauthRouter)
-app.use(adminStatusRouter)
-app.use(contactRouter)
-app.use(chartRouter)
+app.use(userRouter);
+app.use(adminlogRouter);
+app.use(oauthRouter);
+app.use(adminStatusRouter);
+app.use(contactRouter);
+app.use(chartRouter);
+app.use(profileRouter);
+app.use(imageRouter)
 ///////////////////
 function parseCookies(cookieHeader) {
   const cookies = {};
@@ -117,7 +128,7 @@ wss.on("connection",(ws,req)=>{
     admins.set(admin.email,ws);
     
   }
-  else{
+  else if(client){
     clients.set(client.email,ws);
     
   }

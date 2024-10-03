@@ -6,7 +6,8 @@ import { actualPagination, cartManagment } from "../home";
 
 export default function CartElement({ cartStatus }) {
   const [total, setTotal] = useState(0);
-  const states = useContext(cartManagment);
+  const [cart,setCart]=useState([])
+  // const states = useContext(cartManagment);
 
   const navigate = useNavigate();
   const handleCheckout = (event) => {
@@ -15,18 +16,23 @@ export default function CartElement({ cartStatus }) {
   const handleClear = (event) => {
     axios
       .get("http://localhost:3000/clear-cart")
-      .then(async(res) =>{await states.setCart([]);window.location.reload()} );
+      .then(async(res) =>{await setCart([]);window.location.reload()} );
   };
   axios.defaults.withCredentials = true;
   
 
   useEffect(() => {
     setTotal(
-      states.cart.reduce((acc, curr) => {
+      cart.reduce((acc, curr) => {
         return acc + curr.price * curr.quantity;
       }, 0)
     );
   });
+  useEffect(() => {
+    axios.get("http://localhost:3000/cart").then((res) => {
+      setCart(res.data);
+    });
+  }, []);
 
   return (
     <div
@@ -36,7 +42,7 @@ export default function CartElement({ cartStatus }) {
           : "hidden"
       }`}
     >
-      {states.cart.map((item, index) => {
+      {cart.map((item, index) => {
         return <CartItem key={index} value={item} />;
       })}
       <div className="w-full h-1/6 flex flex-col justify-between items-center">

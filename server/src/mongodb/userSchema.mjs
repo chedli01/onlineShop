@@ -16,7 +16,14 @@ const userSchema= new mongoose.Schema({
         type:mongoose.Schema.Types.String,
         required:true,
 
+    },
+    imageURL:{
+        type:mongoose.Schema.Types.String,
+        default:""
+
+
     }
+
 
 })
 

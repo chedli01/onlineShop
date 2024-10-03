@@ -9,6 +9,9 @@ export default function Chat({ chat }) {
   const [msg, setMsg] = useState("");
   const [target, setTarget] = useState("");
 
+  
+
+
   useEffect(() => {
     const socket = new WebSocket("ws://localhost:3000");
     setWs(socket);

@@ -8,13 +8,15 @@ import {
   faCartShopping,
   faArrowRight,
   faBell,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import CartElement from "../Cart/cartElement";
-export default function Header({ notifs , setNotifs}) {
+export default function Header({ notifs, setNotifs }) {
   const [status, setStatus] = useState("");
   const [cartStatus, setCartStatus] = useState("down");
   const [total, setTotal] = useState(0);
   const [display, setDisplay] = useState("hidden");
+  const [user, setUser] = useState("up");
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
   /////////////////////
@@ -51,18 +53,19 @@ export default function Header({ notifs , setNotifs}) {
 
   return (
     <div
-      className={`h-32 flex bg-yellow-400   top-0 ${
+      className={`h-32 flex bg-yellow-400  justify-around   top-0 ${
         cartStatus == "down" ? "w-full" : "w-3/4"
       }`}
     >
       <div
-        className="w-1/3 h-2/3 translate-y-6  bg-cover bg-center"
+        onClick={() => navigate("/home")}
+        className="w-1/4 h-2/3 translate-y-6  bg-cover bg-center"
         style={{ backgroundImage: `url(${myImage})` }}
       ></div>
       <ul className="w-2/3 h-full flex items-center justify-around">
-        <li className="text-6xl text-blue-950 font-extrabold">
+        {/* <li className="text-6xl text-blue-950 font-extrabold">
           <a href="/home">Home</a>
-        </li>
+        </li> */}
         <li className="text-6xl text-blue-950 font-extrabold">
           <a href="/aboutus">About us</a>{" "}
         </li>
@@ -75,11 +78,14 @@ export default function Header({ notifs , setNotifs}) {
         <li
           onClick={(event) => {
             if (display == "hidden") setDisplay("flex");
-            else {setDisplay("hidden");setNotifs([])}
+            else {
+              setDisplay("hidden");
+              setNotifs([]);
+            }
           }}
           className="text-6xl text-blue-950 font-extrabold"
         >
-          <FontAwesomeIcon  icon={faBell} />
+          <FontAwesomeIcon icon={faBell} />
           <span>{notifs.length}</span>
           <div
             className={`w-64 fixed z-10 top-32 right-32   bg-yellow-400  ${
@@ -88,13 +94,48 @@ export default function Header({ notifs , setNotifs}) {
           >
             {notifs.map((item, index) => {
               return (
-                <h1 className="text-lg border-2 border-blue-950 p-1" key={index}>
+                <h1
+                  className="text-lg border-2 border-blue-950 p-1"
+                  key={index}
+                >
                   {item}
                 </h1>
               );
             })}
           </div>
-          
+        </li>
+        <li
+          className="flex flex-col"
+          onClick={() => {
+            if (user == "up") setUser("down");
+            else setUser("up");
+          }}
+        >
+          <FontAwesomeIcon
+            className="text-5xl text-blue-950 font-extrabold"
+            icon={faUser}
+          />
+          <div
+            className={`${
+              user == "down"
+                ? "flex flex-col w-64   top-32 absolute right-48 bg-yellow-400 z-10"
+                : "hidden"
+            }`}
+          >
+            <a
+              href="/profile"
+              className="w-full h-20 text-2xl border-2 border-blue-950 flex items-center font-bold p-1 "
+            >
+              Settings
+            </a>
+            <a
+              className="w-full h-20 text-2xl border-2 border-blue-950 flex items-center font-bold p-1 "
+              href=""
+              onClick={handleClick}
+            >
+              Logout
+            </a>
+          </div>
         </li>
         <li
           onClick={handleCart}

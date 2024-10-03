@@ -150,5 +150,11 @@ route.get("/rankProducts",async(req,res)=>{
     const sorted=full.sort((a,b)=>b.amount-a.amount);
     res.json(sorted)
 })
+
+route.get("/total-orders",async(req,res)=>{
+
+    const orders=await Order.find({userEmail:req.cookies.loginCookie.email})
+    res.json(orders.length)
+})
 export default route;
 

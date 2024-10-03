@@ -109,7 +109,7 @@ const options = {
     <div className={`w-screen h-screen flex items-center  relative`}>
       <Sidebar />
       <div className="w-5/6 h-full flex flex-wrap  absolute top-0 right-6 ">
-      <div className="w-1/2 h-1/2  flex flex-col justify-center items-center">
+      <div className="w-1/2 h-1/2  flex flex-col justify-center items-center bg-green-400">
         
         <PieChart 
           title="Partition Of Products By Category In Our Stock"
@@ -129,7 +129,7 @@ const options = {
         />
         <h1 className="text-lg text-blue-950 font-bold">Partition Of Products By Category In Our Stock</h1>
         </div>
-      <div className="w-1/2 h-1/2 flex flex-col justify-center items-center">
+      <div className="w-1/2 h-1/2 flex flex-col justify-center items-center bg-red-400">
            <BarChart
       width={600}
       height={400}
@@ -142,7 +142,7 @@ const options = {
       <h1 className="text-lg text-blue-950 font-bold">Annual Income For Each Category</h1>
 
     </div>
-    <div className="w-1/2 h-1/2 flex flex-col justify-center items-center ">
+    <div className="w-1/2 h-1/2 flex flex-col justify-center items-center bg-pink-500 ">
       <h1 className="text-4xl text-blue-950 font-bold">User Of The Year</h1>
       <h1 className="text-sm font-bold">{username}</h1>
       <h1 className="text-sm font-bold">{email}</h1>
@@ -150,10 +150,10 @@ const options = {
       
 
     </div >
-    <div  className="w-1/2 h-1/2 flex flex-col justify-center items-center  ">
+    <div  className="w-1/2 h-1/2 flex flex-col justify-center items-center bg-blue-400 ">
     <Chart
       chartType="BarChart"
-      width="100%"
+      width="600px"
       height="400px"
       data={[
         [
@@ -171,8 +171,9 @@ const options = {
         ["1", amount1, "color: #e5e4e2", name1],
       ]}
       options={options}
+      
     />
-<h1 className="text-lg text-blue-950 font-bold">Top 4 Most Selled Products</h1>    
+<h1 className="text-lg text-blue-950 font-bold">Top 4 Products</h1>    
       
 
 

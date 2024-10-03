@@ -13,6 +13,8 @@ import Contact from "./Admin/Contact/contact";
 import Tables from "./Admin/Tables/tables";
 import Analytics from "./Admin/analytics";
 import ChatPage from "./Admin/chatPage";
+import Profile from "./Profile/profile";
+import ResetPassword from "./Profile/resetpassword";
 
 
 function App() {
@@ -31,6 +33,8 @@ function App() {
         <Route path="/admindash/tables" element={<Tables/>}/>
         <Route path="/admindash/analytics" element={<Analytics/>}/>
         <Route path="/admindash/chat" element={<ChatPage/>}/>
+        <Route path="/profile" element={<Profile/>}/>
+        <Route path="/profile/resetpassword/:token" element={<ResetPassword/>}/>
 
       </Routes>
     </Router>
