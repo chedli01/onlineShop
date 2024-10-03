@@ -8,8 +8,10 @@ import axios from "axios";
 
 
 export default function AdminDash(){
+
     const navigate=useNavigate()
     axios.defaults.withCredentials=true;
+    localStorage.setItem('access',false)
 
     const [activePage,setActivePage]=useState("dash");
     const page={activePage,setActivePage}

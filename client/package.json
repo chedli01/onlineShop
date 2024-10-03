@@ -17,6 +17,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@mui/material": "^6.1.1",
+    "@mui/x-charts": "^7.18.0",
     "axios": "^1.7.3",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
@@ -24,8 +25,10 @@
     "mdb-react-ui-kit": "^9.0.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",
+    "react-chartjs-2": "^5.2.0",
     "react-data-table-component": "^7.6.2",
     "react-dom": "^18.3.1",
+    "react-google-charts": "^4.0.7",
     "react-router-dom": "^6.26.0",
     "react-speech-recognition": "^3.10.0"
   },

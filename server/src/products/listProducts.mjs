@@ -62,5 +62,10 @@ route.get("/list-products", async (request, response) => {
     }
   }
 });
+route.delete("/deleteProduct/:id",async(req,res)=>{
+  const id=req.params.id;
+  await Product.deleteOne({id:id});
+  res.sendStatus(200);
+})
 
 export default route;

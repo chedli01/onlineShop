@@ -35,6 +35,7 @@ route.get("/cart-notifs", (req, res) => {
 
   const quantityStream = Product.watch([], { fullDocument: "updateLookup" });
   quantityStream.on("change", async (change) => {
+    if(change.operationType=="update"){
     if (change.updateDescription.updatedFields.quantity) {
       if (req.session.cart) {
         const result = req.session.cart.find(
@@ -59,7 +60,7 @@ route.get("/cart-notifs", (req, res) => {
           }, 5000);
         }
       }
-    }
+    }}
   });
 
   req.on("close", () => {
@@ -76,6 +77,7 @@ route.get("/price-notifs", async (req, res) => {
   const changeStream = Product.watch([], { fullDocument: "updateLookup" });
 
   changeStream.on("change", async (change) => {
+    if(change.operationType=="update"){
     if (change.updateDescription.updatedFields.price) {
       const findProduct = await req.session.cart.find(
         (item) => item.id == change.fullDocument.id
@@ -101,7 +103,7 @@ route.get("/price-notifs", async (req, res) => {
           res.write(`data: ${JSON.stringify(req.session.cart)}\n\n`);
         }, 5000);
       }
-    }
+    }}
   });
 
   req.on("close", () => {

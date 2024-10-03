@@ -7,9 +7,10 @@ import {
   CDBSidebarMenu,
   CDBSidebarMenuItem,
 } from 'cdbreact';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const Sidebar = ({page}) => {
+  const navigate=useNavigate();
   return (
     <div  style={{ display: 'flex', height: '100vh', overflow: 'scroll initial' }}>
       <CDBSidebar textColor="#fff" backgroundColor="#333">
@@ -21,19 +22,19 @@ const Sidebar = ({page}) => {
 
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu>
-            <NavLink onClick={(event)=>page.setActivePage("dash")}  >
+            <NavLink to={"/admindash"}  >
               <CDBSidebarMenuItem icon="columns">Dashboard</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink onClick={(event)=>page.setActivePage("tables")}>
+            <NavLink to={"/admindash/tables"}>
               <CDBSidebarMenuItem icon="table">Tables</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink onClick={(event)=>page.setActivePage("reviews")}>
+            <NavLink onClick={()=>navigate("/reviews")}>
               <CDBSidebarMenuItem icon="user">User's Reviews</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink onClick={(event)=>page.setActivePage("analytics")} >
+            <NavLink to={"/admindash/analytics"}  >
               <CDBSidebarMenuItem icon="chart-line">Analytics</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink onClick={(event)=>page.setActivePage("chat")} >
+            <NavLink to={"/admindash/chat"} >
               <CDBSidebarMenuItem icon='chat'>Chat</CDBSidebarMenuItem>
             </NavLink>
 

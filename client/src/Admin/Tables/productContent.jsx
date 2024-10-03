@@ -67,6 +67,9 @@ export default function ProductContent({ basicData,filter }) {
               }
             }
           }}>Save</button>
+          <button  className="btn btn-primary ml-2" onClick={(event)=>{
+            axios.delete(`http://localhost:3000/deleteProduct/${row.id}`).then(res=>window.location.reload())
+          }}>Delete</button>
         </div>
       ),
     },

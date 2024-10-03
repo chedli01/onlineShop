@@ -13,12 +13,12 @@ export default function AdminContent({page}){
        
         <div className='w-5/6 h-full bg-zinc-500'>
            
-            <Chat   chat={page.activePage=="chat"}/>
+            {/* <Chat   chat={page.activePage=="chat"}/>
            
          
             <Tables active={page.activePage}/>
             <Reviews active={page.activePage} />
-            <Analytics  active={page.activePage}/>
+            <Analytics  active={page.activePage}/> */}
 
         </div>
     )

@@ -22,6 +22,8 @@ import userRouter from "./admin/users.mjs"
 import adminlogRouter from "./admin/login.mjs"
 import oauthRouter from "./admin/oauth.mjs"
 import adminStatusRouter from "./admin/status.mjs"
+import contactRouter from "../mailing/contactUser.mjs"
+import chartRouter from "./admin/analytics.mjs"
 import {WebSocketServer} from "ws";
 import http from "http";
 
@@ -76,6 +78,8 @@ app.use(userRouter)
 app.use(adminlogRouter)
 app.use(oauthRouter)
 app.use(adminStatusRouter)
+app.use(contactRouter)
+app.use(chartRouter)
 ///////////////////
 function parseCookies(cookieHeader) {
   const cookies = {};

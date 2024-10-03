@@ -1,5 +1,7 @@
 import Table from "react-bootstrap/Table";
+import { useNavigate } from "react-router-dom";
 export default function Content({ data }) {
+  const navigate=useNavigate()
   return (
     <Table striped bordered hover>
       <thead>
@@ -14,7 +16,7 @@ export default function Content({ data }) {
         {data.map((item, index) => {
           return (
             <tr key={index}>
-              <td>{item.id}</td>
+              <td>{item._id}</td>
               <td>{item.username}</td>
               <td>{item.email}</td>
               <td className="flex justify-between items-center">
@@ -24,7 +26,12 @@ export default function Content({ data }) {
                 <button className="h-10 w-1/4 bg-blue-700 rounded-md text-white ">
                   Delete{" "}
                 </button>
-                <button className="h-10 w-1/4 bg-blue-700 rounded-md text-white ">
+                <button className="h-10 w-1/4 bg-blue-700 rounded-md text-white " onClick={async()=>{
+                  await localStorage.setItem('access',true)
+
+                  navigate(`/admindash/tables/contactuser?email=${item.email}`)
+
+                }}>
                   Contact User
                 </button>{" "}
               </td>

@@ -9,6 +9,10 @@ import ProductDetails from "./productsCards/productOverview";
 import CheckoutPage from "./Checkout/CheckoutPage";
 import AdminDash from "./Admin/adminDash";
 import AdminLog from "./Admin/Login/adminLog";
+import Contact from "./Admin/Contact/contact";
+import Tables from "./Admin/Tables/tables";
+import Analytics from "./Admin/analytics";
+import ChatPage from "./Admin/chatPage";
 
 
 function App() {
@@ -23,6 +27,11 @@ function App() {
         <Route path="/checkout" element={<CheckoutPage />}/>
         <Route path="/admindash" element={<AdminDash/>}/>
         <Route path="/adminlogin" element={<AdminLog/>}/>
+        <Route path="/admindash/tables/contactuser" element={<Contact/>}/>
+        <Route path="/admindash/tables" element={<Tables/>}/>
+        <Route path="/admindash/analytics" element={<Analytics/>}/>
+        <Route path="/admindash/chat" element={<ChatPage/>}/>
+
       </Routes>
     </Router>
   );

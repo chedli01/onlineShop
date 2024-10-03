@@ -12,6 +12,7 @@ import Content from "./content";
 import axios from "axios";
 import ProductContent from "./productContent";
 import OrderContent from "./orderContent";
+import Sidebar from "../adminHeader";
 
 export default function Tables({ active }) {
   const [table, setTable] = useState("users");
@@ -45,10 +46,11 @@ export default function Tables({ active }) {
 
   return (
     <div
-      className={`w-full h-full  ${
-        active == "tables" ? "flex flex-col space-y-32 items-center" : "hidden"
+      className={`w-screen h-screen flex items-center  relative
       }`}
     >
+      <Sidebar />
+      <div className="w-5/6 h-full flex flex-col  absolute top-0 right-6 space-y-32">
       <NavBar setTable={setTable} />
       {table == "users" ? (
         <Content data={users} />
@@ -56,7 +58,7 @@ export default function Tables({ active }) {
         <ProductContent filter={filter} basicData={products} />
       ) : (
         <OrderContent basicData={orders} />
-      )}
+      )}</div>
     </div>
   );
 }
