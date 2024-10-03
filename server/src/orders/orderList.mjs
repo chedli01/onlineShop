@@ -11,9 +11,6 @@ route.get("/listOrders",async(request,response)=>{
 
 })
 
-route.get("/orderbyuser",async(req,res)=>{
-    const result=await Order.find({userEmail:req.cookies.loginCookie.email})
-    res.json(result)
-})
+
 
 export default route;

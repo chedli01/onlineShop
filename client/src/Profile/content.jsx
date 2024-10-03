@@ -70,7 +70,7 @@ export default function Content({ page, name, email }) {
       const full = "http://localhost:3000/" + db;
       setImageURL(full);
     });
-  }, []);
+  },[]);
   useEffect(() => {
     axios
       .get("http://localhost:3000/total-orders")

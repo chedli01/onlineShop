@@ -31,6 +31,7 @@ const storage = multer.diskStorage({
   }).single('image');
 
   route.post("/uploadImage",async(req,res)=>{
+    console.log("sent")
     upload(req, res, async (err) => {
         if (err) {
           return res.status(400).json({ msg: err });
@@ -57,11 +58,8 @@ const storage = multer.diskStorage({
       })
   })
 
-  route.get("/getImage",async(req,res)=>{
-    const user=await User.findOne({email:req.cookies.loginCookie.email});
-    res.json(user.imageURL);
-  })
 
-export default route
+
+export default route;
 
 

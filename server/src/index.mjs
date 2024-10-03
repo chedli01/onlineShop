@@ -26,6 +26,7 @@ import contactRouter from "../mailing/contactUser.mjs"
 import chartRouter from "./admin/analytics.mjs"
 import profileRouter from "./password/passwordConfig.mjs  "
 import imageRouter from "./image/upload.mjs"
+import getImageRouter from "./image/getimage.mjs"
 import path from "path";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -90,7 +91,8 @@ app.use(adminStatusRouter);
 app.use(contactRouter);
 app.use(chartRouter);
 app.use(profileRouter);
-app.use(imageRouter)
+app.use(imageRouter);
+app.use(getImageRouter)
 ///////////////////
 function parseCookies(cookieHeader) {
   const cookies = {};

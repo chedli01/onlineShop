@@ -2,6 +2,7 @@ import {Router} from "express"
 import Product from "../mongodb/productSchema.mjs";
 import Order from "../mongodb/orderSchema.mjs";
 import User from "../mongodb/userSchema.mjs"
+import { body } from "express-validator";
 
 
 const route = Router();
@@ -155,6 +156,14 @@ route.get("/total-orders",async(req,res)=>{
 
     const orders=await Order.find({userEmail:req.cookies.loginCookie.email})
     res.json(orders.length)
+})
+
+route.get("/userImage/:email",async(req,res)=>{
+    const mail=req.params.email
+    const user=await User.findOne({email:mail})
+    const url=user.imageURL;
+    const fullUrl="http://localhost:3000/"+url;
+    res.json(fullUrl)
 })
 export default route;
 
